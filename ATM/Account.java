@@ -1,3 +1,6 @@
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.text.DecimalFormat;
 import java.util.InputMismatchException;
 import java.util.Scanner;
@@ -173,7 +176,7 @@ public class Account {
 		while (!end) {
 			try {
 				if (accType.equals("Checkings")) {
-					System.out.println("\nSelect an account you wish to tranfers funds to:");
+					System.out.println("\nSelect an account you wish to transfers funds to:");
 					System.out.println("1. Savings");
 					System.out.println("2. Exit");
 					System.out.print("\nChoice: ");
@@ -231,5 +234,11 @@ public class Account {
 				input.next();
 			}
 		}
+	}
+	public static void writeFile (int customerNumber, int pinNumber, int checking, int savings) throws IOException {
+		BufferedWriter bw = new BufferedWriter(new FileWriter("customer.txt"));
+		bw.write(customerNumber + "#" + pinNumber + "#" + checking + "#" + savings);
+		bw.newLine();
+		bw.close();
 	}
 }

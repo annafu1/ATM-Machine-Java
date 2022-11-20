@@ -1,10 +1,14 @@
-import java.io.IOException;
+import java.io.*;
 import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.InputMismatchException;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Scanner;
+import java.io.IOException;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+
 
 public class OptionMenu {
 	Scanner menuInput = new Scanner(System.in);
@@ -211,5 +215,35 @@ public class OptionMenu {
 		System.out.println("\nThank You for using this ATM.\n");
 		menuInput.close();
 		System.exit(0);
+	}
+	public void file() {
+		try (BufferedWriter bw = new BufferedWriter(new FileWriter("customer.txt"))) {
+			for(Map.Entry<Integer, Account> entry : data.entrySet()) {
+				int pinNum = data.get(entry.getKey()).getPinNumber();
+				double checkingAcct = data.get(entry.getKey()).getCheckingBalance();
+				double savingsAcct = data.get(entry.getKey()).getSavingBalance();
+				bw.write(entry.getKey() + ":" + entry.getKey() + ":" + pinNum + checkingAcct + savingsAcct);
+				bw.newLine();
+				}
+			bw.flush();
+			} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	public void fileReader() {
+		try (BufferedReader br = new BufferedReader(new FileReader("customer.txt"))) {
+			String line = null;
+			while ((line = br.readLine()) != null) {
+				String[] str = line.split(":");
+				int key = Integer.parseInt(str[0]);
+				int customer = Integer.parseInt(str[1]);
+				int pinNum = Integer.parseInt(str[2]);
+				double checkingAcct = Double.parseDouble(str[3]);
+				double savingAcct = Double.parseDouble(str[4]);
+				data.put(key,new Account(customer, pinNum, checkingAcct,savingAcct));
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 }
